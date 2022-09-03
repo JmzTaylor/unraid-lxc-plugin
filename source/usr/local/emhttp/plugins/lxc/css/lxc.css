@@ -51,8 +51,8 @@ tr {
     margin: 10px;
 }
 
-p.centered {
-    text-align: center;
+.centered {
+    text-align: center !important;
 }
 
 button.logLine {

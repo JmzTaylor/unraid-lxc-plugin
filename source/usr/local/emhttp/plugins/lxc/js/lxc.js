@@ -45,20 +45,29 @@ function showDialog(callback, text) {
 }
 
 // Function that shows the status dialog
-function showStatus(action, id, title, text) {
+function showStatus(action, id, title, text, wait = 0) {
   let statusInterval;
 
-  Shadowbox.open({
-    content: '<div id="dialogContent" class="logLine spacing"></div>',
-    player: 'html',
-    title: title,
-    onClose: function () {
-      location.reload();
-    },
-    height: Math.min(screen.availHeight, 800),
-    width: Math.min(screen.availWidth, 1200)
-  });
-  waitForElement("#dialogContent", function () {
+  swal({
+    title:title,
+    text:"<pre id='swaltext'></pre><hr>",
+    html:true,
+    animation:'none',
+    customClass: 'nchan',
+    showConfirmButton:true,
+    confirmButtonText: "Done",
+    function (c) {
+      if (c) {
+        location.reload();
+      }
+    }
+  })
+
+  $('button.confirm').prop('disabled',true);
+  $('.la-ball-fall').hide();
+
+  waitForElement("#swaltext", function () {
+    let dialogContent = $("#swaltext");
     $.ajax({
       type: "POST",
       url: '/plugins/lxc/include/ajax.php',
@@ -68,14 +77,14 @@ function showStatus(action, id, title, text) {
         'container': id
       },
       beforeSend: function () {
-        $("#dialogContent").append(text);
+        dialogContent.append(text);
         statusInterval = setInterval(function () {
-          $("#dialogContent").append("<p>......</p>");
+          dialogContent.append("<p>......</p>");
         }, 5000);
       },
       success: function (data) {
-        $("#dialogContent").append("<p>Done " + text + "</p>");
-        $("#dialogContent").append('<p class="centered"><button class="logLine" type="button" onclick="top.Shadowbox.close(); location.reload()">Done</button></p>');
+        dialogContent.append("<p>Done " + text + "</p>");
+        $('button.confirm').prop('disabled',false);
         clearInterval(statusInterval);
       }
     });
@@ -91,18 +100,26 @@ function showDropdown(contName) {
 function createContainer(name, distribution, release, autostart, mac) {
   let statusInterval;
 
-  Shadowbox.open({
-    content: '<div id="dialogContent" class="logLine spacing"></div>',
-    player: 'html',
-    title: "Create Container",
-    onClose: function () {
-      location.reload();
-    },
-    height: Math.min(screen.availHeight, 800),
-    width: Math.min(screen.availWidth, 1200)
-  });
-  waitForElement("#dialogContent", function () {
-    let dialogContent = $("#dialogContent");
+  swal({
+    title:'Create Container',
+    text:"<pre id='swaltext'></pre><hr>",
+    html:true,
+    animation:'none',
+    customClass: 'nchan',
+    showConfirmButton:true,
+    confirmButtonText: "Done",
+    function (p) {
+      if (p) {
+        location.reload();
+      }
+    }
+  })
+
+  $('button.confirm').prop('disabled',true);
+  $('.la-ball-fall').hide();
+
+  waitForElement("#swaltext", function () {
+    let dialogContent = $("#swaltext");
     $.ajax({
       type: "POST",
       url: '/plugins/lxc/include/ajax.php',
@@ -136,8 +153,8 @@ function createContainer(name, distribution, release, autostart, mac) {
         dialogContent.append("<p>lxc-attach " + name + "</p>")
         dialogContent.append('<p>It is recommended to attach to the corresponding shell by typing in for example:</p>');
         dialogContent.append("<p>lxc-attach " + name + " /bin/bash</p>");
-        dialogContent.append('<p class="centered"><button class="logLine" type="button" onclick="top.Shadowbox.close(); location.reload()">Done</button></p>');
         clearInterval(statusInterval);
+        $('button.confirm').prop('disabled',false);
       }
     });
   });
@@ -147,18 +164,26 @@ function createContainer(name, distribution, release, autostart, mac) {
 function createCopy(name, autostart, mac) {
   let statusInterval;
 
-  Shadowbox.open({
-    content: '<div id="dialogContent" class="logLine spacing"></div>',
-    player: 'html',
-    title: "Copy Container",
-    onClose: function () {
-      location.reload();
-    },
-    height: Math.min(screen.availHeight, 800),
-    width: Math.min(screen.availWidth, 1200)
-  });
-  waitForElement("#dialogContent", function () {
-    let dialogContent = $("#dialogContent");
+  swal({
+    title:'Copy Container',
+    text:"<pre id='swaltext'></pre><hr>",
+    html:true,
+    animation:'none',
+    customClass: 'nchan',
+    showConfirmButton:true,
+    confirmButtonText: "Done",
+    function (p) {
+      if (p) {
+        location.reload();
+      }
+    }
+  })
+
+  $('button.confirm').prop('disabled',true);
+  $('.la-ball-fall').hide();
+
+  waitForElement("#swaltext", function () {
+    let dialogContent = $("#swaltext");
     $.ajax({
       type: "POST",
       url: '/plugins/lxc/include/ajax.php',
@@ -191,7 +216,7 @@ function createCopy(name, autostart, mac) {
         dialogContent.append("<p>lxc-attach " + name + "</p>")
         dialogContent.append('<p>It is recommended to attach to the corresponding shell by typing in for example:</p>');
         dialogContent.append("<p>lxc-attach " + name + " /bin/bash</p>");
-        dialogContent.append('<p class="centered"><button class="logLine" type="button" onclick="top.Shadowbox.close(); location.reload()">Done</button></p>');
+        $('button.confirm').prop('disabled',false);
         clearInterval(statusInterval);
       }
     });
@@ -243,18 +268,26 @@ $(function() {
     let name = this.contName.value;
     let autostart = this.contAutostart.checked;
     let mac = this.contMac.value;
-    Shadowbox.open({
-      content: '<div id="dialogContent" class="logLine spacing"></div>',
-      player: 'html',
-      title: "Restoring Container",
-      onClose: function () {
-        location.reload();
-      },
-      height: Math.min(screen.availHeight, 800),
-      width: Math.min(screen.availWidth, 1200)
-    });
-    waitForElement("#dialogContent", function () {
-      let dialogContent = $("#dialogContent");
+    swal({
+      title:"Restoring Container",
+      text:"<pre id='swaltext'></pre><hr>",
+      html:true,
+      animation:'none',
+      customClass: 'nchan',
+      showConfirmButton:true,
+      confirmButtonText: "Done",
+      function (p) {
+        if (p) {
+          location.reload();
+        }
+      }
+    })
+
+    $('button.confirm').prop('disabled',true);
+    $('.la-ball-fall').hide();
+
+    waitForElement("#swaltext", function () {
+      let dialogContent = $("#swaltext");
       $.ajax({
         type: "POST",
         url: '/plugins/lxc/include/ajax.php',
@@ -288,7 +321,7 @@ $(function() {
           dialogContent.append("<p>lxc-attach " + name + "</p>")
           dialogContent.append('<p>It is recommended to attach to the corresponding shell by typing in for example:</p>');
           dialogContent.append("<p>lxc-attach " + name + " /bin/bash</p>");
-          dialogContent.append('<p class="centered"><button class="logLine" type="button" onclick="top.Shadowbox.close(); location.reload()">Done</button></p>');
+          $('button.confirm').prop('disabled',false);
           clearInterval(statusInterval);
         }
       });
@@ -347,17 +380,26 @@ $(function() {
       e.stopImmediatePropagation();
       let statusInterval;
       let container = $(e.target).attr("class");
-      Shadowbox.open({
-        content: '<div id="dialogContent" class="logLine spacing"></div>',
-        player: 'html',
-        title: "Configuration",
-        onClose: function () {
-          location.reload();
-        },
-        height: Math.min(screen.availHeight, 800),
-        width: Math.min(screen.availWidth, 1200)
-      });
-      waitForElement("#dialogContent", function () {
+      swal({
+        title:"Configuration",
+        text:"<pre id='swaltext'></pre><hr>",
+        html:true,
+        animation:'none',
+        customClass: 'nchan',
+        showConfirmButton:true,
+        confirmButtonText: "Done",
+        function (p) {
+          if (p) {
+            location.reload();
+          }
+        }
+      })
+
+      $('button.confirm').prop('disabled',true);
+      $('.la-ball-fall').hide();
+
+      waitForElement("#swaltext", function () {
+        let dialogContent = $("#swaltext");
         $.ajax({
           type: "POST",
           url: '/plugins/lxc/include/ajax.php',
@@ -367,8 +409,8 @@ $(function() {
             'container': container
           },
           success: function (data) {
-            $("#dialogContent").append(data);
-            $("#dialogContent").append('<p class="centered"><button class="logLine" type="button" onclick="top.Shadowbox.close(); location.reload()">Done</button></p>');
+            dialogContent.append(data);
+            $('button.confirm').prop('disabled',false);
             clearInterval(statusInterval);
           }
         });
@@ -405,12 +447,63 @@ $(function() {
 
   // Listener to destroy container
   $(".destroyCONT").on("click", function() {
-    let id = this.id
-    showDialog(function(response) {
-      if (response) {
-        showStatus("destroyCONT", id, "Destroy Container", "Destroying Container " + id);
-      }
-    }, "ATTENTION: Do you really want to destroy this LXC Container? This is IRREVERSIBLE and will delete the container, snapshots and all data in it!");
+    let id = this.id;
+    let statusInterval;
+
+    swal({
+        title: "Proceed?",
+        text: "ATTENTION: Do you really want to destroy this LXC Container? This is IRREVERSIBLE and will delete the container, snapshots and all data in it!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Proceed",
+        cancelButtonText: "Cancel",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      },
+      function(isConfirm){
+        if (isConfirm) {
+          swal({
+            title:"Configuration",
+            text:"<pre id='swaltext'></pre><hr>",
+            html:true,
+            animation:'none',
+            customClass: 'nchan',
+            showConfirmButton:true,
+            confirmButtonText: "Done",
+          }, function (isConfirm) {
+            if (isConfirm) {
+              location.reload();
+            }
+          });
+
+          $('button.confirm').prop('disabled',true);
+          $('.la-ball-fall').hide();
+
+          waitForElement("#swaltext", function () {
+            let dialogContent = $("#swaltext");
+            $.ajax({
+              type: "POST",
+              url: '/plugins/lxc/include/ajax.php',
+              data: {
+                'lxc': '',
+                'action': 'destroyCONT',
+                'container': id
+              },
+              beforeSend: function () {
+                dialogContent.append("Destroying container, please wait until the DONE button is displayed!");
+                statusInterval = setInterval(function () {
+                  dialogContent.append("<p>......</p>");
+                }, 5000);
+              },
+              success: function (data) {
+                dialogContent.append("Container destroyed");
+                $('button.confirm').prop('disabled',false);
+                clearInterval(statusInterval);
+              }
+            });
+          });
+        }
+      });
   });
 
   // Listener to snapshot container
