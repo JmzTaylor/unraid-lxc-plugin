@@ -35,7 +35,9 @@ class Settings {
     setVariable('/boot/config/plugins/lxc/default.conf', 'lxc.net.0.link', $bridge);
     setVariable('/boot/config/plugins/lxc/plugin.cfg', 'SERVICE', $service);
 
-    unlink('/var/cache/lxc');
+    if (!file_exists("/var/cache/lxc")) {
+        mkdir('/var/cache/lxc');
+    }
 
     if (!is_file('/etc/lxc/default.conf')) {
       symlink( "/boot/config/plugins/lxc/default.conf", "/etc/lxc/default.conf");
@@ -50,7 +52,11 @@ class Settings {
       mkdir($default_path . '/cache');
     }
 
-    symlink($default_path . "/cache", "/var/cache/lxc");
+    if (is_link("/var/cache/lxc/cache")) {
+        unlink("/var/cache/lxc/cache");
+    }
+
+    symlink($default_path . "/cache", "/var/cache/lxc/cache");
 
     if ($started == "enabled") {
       exec('lxc-autostart');
