@@ -509,11 +509,62 @@ $(function() {
   // Listener to snapshot container
   $(".snapshotCONT").on("click", function() {
     let id = this.id;
-    showDialog(function(response) {
-      if (response) {
-        showStatus("snapshotCONT", id, "Snapshot Container", "Snapshotting Container " + id);
-      }
-    }, "This action will stop the LXC Container and start it again if it was running.");
+    let statusInterval;
+
+    swal({
+          title: "Proceed?",
+          text: "This action will stop the LXC Container and start it again if it was running.",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Proceed",
+          cancelButtonText: "Cancel",
+          closeOnConfirm: false,
+          closeOnCancel: false
+        },
+        function(isConfirm){
+          if (isConfirm) {
+            swal({
+              title:"Snapshot Container",
+              text:"<pre id='swaltext'></pre><hr>",
+              html:true,
+              animation:'none',
+              customClass: 'nchan',
+              showConfirmButton:true,
+              confirmButtonText: "Done",
+            }, function (isConfirm) {
+              if (isConfirm) {
+                location.reload();
+              }
+            });
+
+            $('button.confirm').prop('disabled',true);
+            $('.la-ball-fall').hide();
+
+            waitForElement("#swaltext", function () {
+              let dialogContent = $("#swaltext");
+              $.ajax({
+                type: "POST",
+                url: '/plugins/lxc/include/ajax.php',
+                data: {
+                  'lxc': '',
+                  'action': 'snapshotCONT',
+                  'container': id
+                },
+                beforeSend: function () {
+                  dialogContent.append("Snapshotting Container " + id);
+                  statusInterval = setInterval(function () {
+                    dialogContent.append("<p>......</p>");
+                  }, 5000);
+                },
+                success: function (data) {
+                  dialogContent.append("Snapshot Created");
+                  $('button.confirm').prop('disabled',false);
+                  clearInterval(statusInterval);
+                }
+              });
+            });
+          }
+        });
   });
 })
 

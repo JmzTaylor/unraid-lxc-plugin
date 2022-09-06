@@ -14,10 +14,10 @@ $allContainers = getAllContainers();
 $cgroup2 = exec("if ! $(grep -wq unraidcgroup2 /proc/cmdline) ; then echo '1'; else echo '2'; fi");
 
 ?>
-<link rel="stylesheet" href="<?autov('/plugins/lxc/css/lxc.css')?>">
+<link rel="stylesheet" href="/plugins/lxc/css/lxc.css">
 <link type="text/css" rel="stylesheet" href="<?autov('/webGui/styles/jquery.switchbutton.css')?>">
 <script src="<?autov('/webGui/javascript/jquery.switchbutton.js')?>"></script>
-<script src="<?autov('/plugins/lxc/js/lxc.js')?>"></script>
+<script src="/plugins/lxc/js/lxc.js"></script>
 <style>
 label+.content {
     margin-top: 40px !important;
