@@ -456,9 +456,7 @@ $(function() {
         type: "warning",
         showCancelButton: true,
         confirmButtonText: "Proceed",
-        cancelButtonText: "Cancel",
-        closeOnConfirm: false,
-        closeOnCancel: false
+        cancelButtonText: "Cancel"
       },
       function(isConfirm){
         if (isConfirm) {
@@ -517,9 +515,7 @@ $(function() {
           type: "warning",
           showCancelButton: true,
           confirmButtonText: "Proceed",
-          cancelButtonText: "Cancel",
-          closeOnConfirm: false,
-          closeOnCancel: false
+          cancelButtonText: "Cancel"
         },
         function(isConfirm){
           if (isConfirm) {
